@@ -2,8 +2,6 @@ package ru.netology;
 
 import org.junit.jupiter.api.Test;
 
-import javax.swing.*;
-
 import static com.codeborne.selenide.Condition.*;
 import static com.codeborne.selenide.Selenide.$;
 import static com.codeborne.selenide.Selenide.open;
@@ -20,7 +18,7 @@ public class CardOrderTest {
     }
 
     @Test
-    void shouldHaveNameFieldsFilled(){
+    void shouldHaveNameFieldFilled(){
         open("http://localhost:7777");
         $("[data-test-id=phone] input").setValue("+79876543211");
         $("[data-test-id=agreement]").click();
@@ -29,12 +27,22 @@ public class CardOrderTest {
     }
 
     @Test
-    void shouldHavePhoneFieldsFilled(){
+    void shouldHavePhoneFieldFilled(){
         open("http://localhost:7777");
         $("[data-test-id=name] input").setValue("Казимир Алмазов");
         $("[data-test-id=agreement]").click();
         $("button[type=button]").click();
         $("[data-test-id=phone].input_invalid .input__sub").shouldHave(exactText("Поле обязательно для заполнения"));
+    }
+
+    @Test
+    void shouldHavePhoneFieldRightFilled(){
+        open("http://localhost:7777");
+        $("[data-test-id=name] input").setValue("Казимир Алмазов");
+        $("[data-test-id=phone] input").setValue("+7987654321");
+        $("[data-test-id=agreement]").click();
+        $("button[type=button]").click();
+        $("[data-test-id=phone].input_invalid .input__sub").shouldHave(exactText("Телефон указан неверно. Должно быть 11 цифр, например, +79012345678."));
     }
 
     @Test
